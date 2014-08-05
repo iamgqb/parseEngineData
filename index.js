@@ -2,11 +2,11 @@
 
 // engineData is an array form descriptor.coffee
 
-var MATCH_TYPE = [hashStart]
+var MATCH_TYPE = [hashStart, hashEnd]
 
 var paresr = function(engineData){
     //字符替换？
-    textReg(textSegment(codeToString(engineData)));
+    console.log (textReg(textSegment(codeToString(engineData))));
     //分割
     //逐行正则
 }
@@ -17,37 +17,53 @@ function codeToString(engineData){
 }
 
 function textSegment(text){
-    console.log(text.split('\n'))
     return text.split('\n');
 }
 
 function textReg(textArr){
-    textArr.map(function(currentText){
-        matchTest(currentText.replace(/^\t+/g, ''));
-    })
+    return textArr.map(function(currentText){
+        return matchTest(currentText.replace(/^\t+/g, ''));
+    }).join('\n');
 }
 
 function matchTest(currentText){
-    MATCH_TYPE.forEach(function(currentType){
-        var t = new currentType(currentText);
+
+    for (var currentType in MATCH_TYPE) {
+        var t = new MATCH_TYPE[currentType](currentText);
         if (t.match()){
-            t.parse();
-            // break;
+            return t.parse();
         }
-    })
+    }
+    return currentText;
 }
 
 function hashStart(text){
     var reg = /^<<$/;
+    var toStr = '{'
 
     return {
         match: function(){
             return reg.test(text);
         },
         parse: function(){
-            console.log(text)
+            return text.replace(reg, toStr);
         }
     }
 
+}
+
+function hashEnd(text){
+    var reg = /^>>$/;
+    var toStr = '}'
+
+    return {
+        match: function(){
+            return reg.test(text);
+        },
+        parse: function(){
+            return text.replace(reg, toStr);
+        }
+    }
+    
 }
 module.exports = paresr;
