@@ -9,14 +9,14 @@ var MATCH_TYPE = [  hashStart,
                     propertyWithData];
 
 var nodeStack = [], propertyStack = [];
-var currentNode, currentProperty;
+var currentNode = [], currentProperty;
 
 var paresr = function(engineData){
     //字符替换？
     textReg(textSegment(codeToString(engineData)));
     //分割
     //逐行正则
-    console.log(nodeStack)
+    console.log(currentNode[0])
 }
 
 
@@ -61,7 +61,7 @@ function hashStart(text){
     return {
         match: Match(reg, text),
         parse: function(){
-            nodeStack.push({});
+            stackPush({});
         }
     }
 }
@@ -71,8 +71,7 @@ function hashEnd(text){
     return {
         match: Match(reg, text),
         parse: function(){
-            var data = nodeStack.pop();
-            pushKeyValue(data);
+            updateNode();
         }
     }
 }
@@ -82,8 +81,8 @@ function multiLineArrayStart(text){
     return {
         match: Match(reg, text),
         parse: function(){
-            nodeStack.push([]);
             propertyStack.push(text.match(reg)[1]);
+            stackPush([]);
         }
     }
 }
@@ -93,8 +92,7 @@ function multiLineArrayEnd(text){
     return {
         match: Match(reg, text),
         parse: function(){
-            var data = nodeStack.pop();
-            pushKeyValue(data);
+            updateNode();
         }
     }
 }
@@ -104,7 +102,7 @@ function property(text){
     return {
         match: Match(reg, text),
         parse: function(){
-            propertyStack.push(text);
+            propertyStack.push(text.match(reg)[1]);
         }
     }
 }
@@ -115,19 +113,28 @@ function propertyWithData(text){
         match: Match(reg, text),
         parse: function(){
             var match = text.match(reg);
-            pushKeyValue(match[2], match[1])
+            pushKeyValue(match[1], match[2])
         }
     }
 }
 
-
-function pushKeyValue(data, property){ 
-    //参数顺序不换，函数内检查对象是否有key，push到数组中无key
-    var o = nodeStack[nodeStack.length-1];
-    if (isArray(o)){
-        nodeStack[nodeStack.length-1].push(data);
-    } else {
-        nodeStack[nodeStack.length-1][propertyStack.pop()] = data;        
-    }
+// node handle
+function stackPush(node){
+    nodeStack.push(currentNode);
+    currentNode = node;
 }
+function updateNode(){
+    var node = nodeStack.pop();
+    if (isArray(node)){
+        node.push(currentNode);
+    } else {
+        node[propertyStack.pop()] = currentNode;
+    }
+    currentNode = node;
+}
+function pushKeyValue(key,value){
+    currentNode[key] = value;
+}
+
+
 module.exports = paresr;
