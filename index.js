@@ -1,4 +1,5 @@
 
+var iconv = require('iconv-lite')
 // engineData is an array form descriptor.coffee
 
 var MATCH_TYPE = [  hashStart,
@@ -6,7 +7,14 @@ var MATCH_TYPE = [  hashStart,
                     multiLineArrayStart,
                     multiLineArrayEnd,
                     property, 
-                    propertyWithData];
+                    propertyWithData,
+                    singleLineArray,
+                    boolean,
+                    number,
+                    numberWithDecimal,
+                    string];
+
+var VALUE_TYPE = []
 
 var nodeStack = [], propertyStack = [];
 var currentNode = [], currentProperty;
@@ -16,7 +24,7 @@ var paresr = function(engineData){
     textReg(textSegment(codeToString(engineData)));
     //分割
     //逐行正则
-    console.log(currentNode[0])
+    return currentNode[0]
 }
 
 
@@ -30,19 +38,21 @@ function textSegment(text){
 
 function textReg(textArr){
     textArr.map(function(currentText){
-        matchTest(currentText.replace(/^\t+/g, ''));
+        typeMatch(currentText.replace(/^\t+/g, ''));
     });
+
 }
 
-function matchTest(currentText){
+function typeMatch(currentText){
 
     for (var currentType in MATCH_TYPE) {
         var t = new MATCH_TYPE[currentType](currentText);
         if (t.match){
-            t.parse();
-            return;
+            return t.parse();
         }
     }
+
+    return currentText;
 }
 
 // helper fun
@@ -53,8 +63,7 @@ function isArray(o){
     return Object.prototype.toString.call(o) === '[object Array]';
 }
 
-
-// reg fun
+// tyep reg
 function hashStart(text){
     var reg = /^<<$/;
 
@@ -107,13 +116,72 @@ function property(text){
     }
 }
 function propertyWithData(text){
-    var reg = /^\/([A-Z0-9]+) (.*)$/i;
+    var reg = /^\/([A-Z0-9]+)\s((.|\r)*)$/i;
 
     return {
         match: Match(reg, text),
         parse: function(){
             var match = text.match(reg);
-            pushKeyValue(match[1], match[2])
+            pushKeyValue(match[1], typeMatch(match[2]));
+        }
+    }
+}
+// value reg
+function boolean(text){
+    var reg = /^(true|false)$/;
+    return {
+        match: Match(reg, text),
+        parse: function(){
+            return text === 'true'? true:false;
+        }
+    }
+}
+function number(text){
+    var reg = /^-?\d+$/;
+    return {
+        match: Match(reg, text),
+        parse: function(){
+            return Number(text);
+        }
+    }
+}
+function numberWithDecimal(text){
+    var reg = /^(-?\d*)\.(\d+)$/;
+    return {
+        match: Match(reg, text),
+        parse: function(){
+            return Number(text);
+        }
+    }
+}
+function singleLineArray(text){
+    //单行数组似乎只有数字数组的情况
+    var reg = /^\[(.*)\]$/;
+    return {
+        match: Match(reg, text),
+        parse: function(){
+            var items = text.match(reg)[1].trim().split(' ');
+            var tempArr = [];
+            for (var i=0, l=items.length; i<l; i++){
+                tempArr.push(typeMatch(items[i]));
+            }
+            return tempArr;
+        }
+    }
+}
+
+function string(text){
+    //有点复杂，最后再来//妈蛋Editor中Text不靠谱啊，编码有问题啊
+    var reg = /^\(((.|\r)*)\)$/;
+    return {
+        match: Match(reg, text),
+        parse: function(){
+            var txt = text.match(reg)[1];
+            var bf = [];
+            for (var i=0,l=txt.length;i<l;i++){
+                bf.push(txt.charCodeAt(i));
+            }
+            return iconv.decode(new Buffer(bf), 'utf-16');//前两位指定了，这里直接uft-16
         }
     }
 }
