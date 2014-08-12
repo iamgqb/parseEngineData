@@ -1,4 +1,3 @@
-
 var iconv = require('iconv-lite')
 // engineData is an array form descriptor.coffee
 
@@ -14,17 +13,17 @@ var MATCH_TYPE = [  hashStart,
                     numberWithDecimal,
                     string];
 
-var VALUE_TYPE = []
-
 var nodeStack = [], propertyStack = [];
-var currentNode = [], currentProperty;
+var currentNode = [];
 
 var paresr = function(engineData){
     //字符替换？
+    nodeStack = propertyStack = currentNode = [];//重置一下
     textReg(textSegment(codeToString(engineData)));
     //分割
     //逐行正则
-    return currentNode[0]
+    // return currentNode[0]; //变量会被保存下来
+    return currentNode.shift();
 }
 
 
@@ -203,6 +202,5 @@ function updateNode(){
 function pushKeyValue(key,value){
     currentNode[key] = value;
 }
-
 
 module.exports = paresr;
