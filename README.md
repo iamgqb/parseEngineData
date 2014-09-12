@@ -6,6 +6,9 @@ Maybe you know [https://github.com/layervault/psd-enginedata](https://github.com
 
 This is a javascript achieve. Need iconv-lite, beacuse the text. 
 
+## Installation
+	npm install parse-engine-data
+
 ## Usage
 	var fs = require('fs');
 	var parseEngineData = require('./parseEngineData');
