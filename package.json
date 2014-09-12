@@ -1,5 +1,5 @@
 {
-  "name": "parse_engine_data",
+  "name": "parse-engine-data",
   "version": "0.1.2",
   "description": "parse engine data in psd file",
   "main": "./lib/parseEngineData.js",
