@@ -7,14 +7,15 @@ Maybe you know [https://github.com/layervault/psd-enginedata](https://github.com
 This is a javascript achieve. Need iconv-lite, beacuse the text. 
 
 ## Installation
-	npm install parse-engine-data
+```
+npm install parse-engine-data
 
 ## Usage
-	var fs = require('fs');
-	var parseEngineData = require('./parseEngineData');
-	
-	fs.readFile('./enginedata', function(err, res){
-	    var r = parseEngineData(res);
-	    console.log(r);
-	})
+var fs = require('fs');
+var parseEngineData = require('./parseEngineData');
+
+fs.readFile('./enginedata', function(err, res){
+    var r = parseEngineData(res);
+    console.log(r);
+})
 
