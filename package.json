@@ -1,0 +1,30 @@
+{
+  "name": "parseEngineData",
+  "version": "0.0.0",
+  "description": "parse engine data in psd file",
+  "main": ".lib/parseEngineData.js",
+  "dependencies": {
+    "iconv-lite": "^0.4.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/imgqb/parseEngineData.git"
+  },
+  "keywords": [
+    "psd",
+    "engineData"
+  ],
+  "author": {
+    "name": "imgqb",
+    "email": "iamgqb@gmail.com"
+    },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/imgqb/parseEngineData/issues"
+  },
+  "homepage": "https://github.com/imgqb/parseEngineData"
+}
