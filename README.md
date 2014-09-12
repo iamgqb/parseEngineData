@@ -9,8 +9,10 @@ This is a javascript achieve. Need iconv-lite, beacuse the text.
 ## Installation
 ```
 npm install parse-engine-data
+```
 
 ## Usage
+```javascript
 var fs = require('fs');
 var parseEngineData = require('./parseEngineData');
 
@@ -18,4 +20,4 @@ fs.readFile('./enginedata', function(err, res){
     var r = parseEngineData(res);
     console.log(r);
 })
-
+```
