@@ -1,5 +1,5 @@
 var fs = require('fs');
-var parseEngineData = require('../lib/parseEngineData');
+var parseEngineData = require('..');
 
 fs.readFile('./enginedata', function(err, res){
     var r = parseEngineData(res);

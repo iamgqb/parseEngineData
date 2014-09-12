@@ -1,8 +1,8 @@
 {
-  "name": "parseEngineData",
-  "version": "0.0.0",
+  "name": "parse_engine_data",
+  "version": "0.1.2",
   "description": "parse engine data in psd file",
-  "main": ".lib/parseEngineData.js",
+  "main": "./lib/parseEngineData.js",
   "dependencies": {
     "iconv-lite": "^0.4.4"
   },
