@@ -1,30 +1,28 @@
 {
-  "name": "parse-engine-data",
-  "version": "0.1.2",
+  "name": "@noahlam/parse-engine-data",
+  "version": "0.1.3",
   "description": "parse engine data in psd file",
   "main": "./lib/parseEngineData.js",
-  "dependencies": {
-    "iconv-lite": "^0.4.4"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/imgqb/parseEngineData.git"
+    "url": "https://github.com/noahlam/parseEngineData.git"
   },
   "keywords": [
     "psd",
     "engineData"
   ],
   "author": {
-    "name": "imgqb",
-    "email": "iamgqb@gmail.com"
-    },
+    "name": "noahlam",
+    "email": "284516433@qq.com"
+  },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/imgqb/parseEngineData/issues"
+    "url": "https://github.com/noahlam/parseEngineData/issues"
   },
-  "homepage": "https://github.com/imgqb/parseEngineData"
+  "homepage": "https://github.com/noahlam/parseEngineData"
 }
